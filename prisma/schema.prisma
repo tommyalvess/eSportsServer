@@ -1,0 +1,35 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Games {
+  id        String @id @default(uuid())
+  title     String
+  bannerUrl String
+
+  ads Ad[]
+}
+
+model Ad {
+  id              String   @id @default(uuid())
+  gamesId         String
+  name            String
+  yearsPlaying    Int
+  discord         String
+  weekDays        String
+  hourStart       Int
+  hourEnd         Int
+  useVoiceChannel Boolean
+  createAt        DateTime @default(now())
+
+  //So esc reva o campo e o relacionamento q o prisma cria tudo. Tipo game Games
+  game Games @relation(fields: [gamesId], references: [id])
+}
